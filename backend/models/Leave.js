@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 // Schema for Leave
 const leaveSchema = new mongoose.Schema({
@@ -25,14 +25,12 @@ const leaveSchema = new mongoose.Schema({
     required: true
   },
   // For single-day leaves
-  slots: [
-    {
+  slot: {
       start: { type: String, required: true }, 
       end: { type: String, required: true } 
     }
-  ]
 });
 
 const Leave = mongoose.model('Leave', leaveSchema);
 
-module.exports = Leave;
+export default Leave;

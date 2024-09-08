@@ -1,9 +1,9 @@
 // Importing dependencies
-const express = require('express');
-const dotenv = require('dotenv');
-const routes = require('./routes');
-const mongoose = require('mongoose');
-const customResponse = require('./utils/customResponse');
+import express from 'express';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import routes from './routes.js';
+import customResponse from './utils/customResponse.js';
 
 // Loading environment variables
 dotenv.config();
@@ -36,5 +36,5 @@ app.listen(PORT, () => {
 });
 
 app.use((req, res) => {
-  customResponse.getGenericResponse(res, req, 404, null, "Sorry unable to find this page!", "Wrong URL");
+  customResponse.sendGenericResponse(req, res, 404, null, "Sorry unable to find this page!", "Wrong URL");
 });

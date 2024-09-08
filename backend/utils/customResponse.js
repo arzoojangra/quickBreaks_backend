@@ -20,4 +20,4 @@ customResponse.makeGenericResponse = function () {
   }
 }
 
-module.exports = customResponse;
+export default customResponse;

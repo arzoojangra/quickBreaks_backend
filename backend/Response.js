@@ -1,5 +1,5 @@
-const API = require("./API/api");
-const customResponse = require("./utils/customResponse");
+import API from "./API/api.js";
+import customResponse from './utils/customResponse.js';
 
 const Response = {};
 
@@ -48,4 +48,43 @@ Response.findScheduleForPartner = async function(req, res) {
     }
 }
 
-module.exports = Response;
+// Find schedule of a partner for a given date
+Response.findScheduleForDate = async function(req, res) {
+    try {
+        let data = await API.findScheduleForDate(req, res);
+        customResponse.sendGenericResponse(req, res, data.statusCode, data.result, data.message, data.error);
+    } catch (error) {
+        customResponse.sendGenericResponse(req, res, 500, null, "", "Something went wrong!");
+    }
+}
+
+// Apply leave
+Response.applyLeave = async function(req, res) {
+    try {
+        let data = await API.applyLeave(req, res);
+        customResponse.sendGenericResponse(req, res, data.statusCode, data.result, data.message, data.error);
+    } catch (error) {
+        customResponse.sendGenericResponse(req, res, 500, null, "", "Something went wrong!");
+    }
+}
+
+// Get all leaves
+Response.getAllLeaves = async function(req, res) {
+    try {
+        let data = await API.getAllLeaves(req, res);
+        customResponse.sendGenericResponse(req, res, data.statusCode, data.result, data.message, data.error);
+    } catch (error) {
+        customResponse.sendGenericResponse(req, res, 500, null, "", "Something went wrong!");
+    }
+}
+
+// Update leave
+Response.updateLeave = async function(req, res) {
+    try {
+        let data = await API.updateLeave(req, res);
+        customResponse.sendGenericResponse(req, res, data.statusCode, data.result, data.message, data.error);
+    } catch (error) {
+        customResponse.sendGenericResponse(req, res, 500, null, "", "Something went wrong!");
+    }
+}
+export default Response;
