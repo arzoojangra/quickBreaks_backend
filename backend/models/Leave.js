@@ -24,12 +24,29 @@ const leaveSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  reason:{
+    type: String,
+    required: false
+  },
+  type:{
+    type: String,
+    required: false
+  },
   // For single-day leaves
   slot: {
-      start: { type: String, required: true }, 
-      end: { type: String, required: true } 
+      start: { type: String }, 
+      end: { type: String } 
     }
 });
+
+// leaveSchema.pre('validate', function(next) {
+//   if (this.slot){
+//     if (!this.slot.start || !this.slot.end) {
+//       this.invalidate('slot', 'Both start and end times are required if slot is present.');
+//     }
+//   }
+//   next();
+// });
 
 const Leave = mongoose.model('Leave', leaveSchema);
 

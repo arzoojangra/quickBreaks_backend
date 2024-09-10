@@ -8,7 +8,7 @@ customResponse.sendGenericResponse = function(req, res, statusCode = 200, result
       message: message,
       error: error,
     };
-    res.status(parseInt(statusCode)).json(response);    
+    res.status(200).json(response);    
 }
 
 customResponse.makeGenericResponse = function () {

@@ -4,11 +4,14 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import routes from './routes.js';
 import customResponse from './utils/customResponse.js';
+import cors from 'cors';
 
 // Loading environment variables
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
 
 const connectDB = async () => {
   try {
@@ -27,7 +30,7 @@ connectDB();
 app.use(express.json());
 
 // using routes
-app.use(routes)
+app.use('/api', routes);
 
 // Starting server
 const PORT = process.env.PORT || 5000;

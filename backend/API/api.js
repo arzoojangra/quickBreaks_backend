@@ -131,7 +131,7 @@ API.findScheduleForDate = async (req, res) =>{
     if(!date){
       response.statusCode = 400;
       response.message = "Please provide date";
-      response.error = "Date id missing";
+      response.error = "Date missing";
       return response;
     }
     if(!partnerId){
@@ -165,13 +165,13 @@ API.findScheduleForDate = async (req, res) =>{
 
 // Apply leave
 API.applyLeave = async (req, res) => {
-  let {partnerId, startDate, endDate, slot} = req.body;
+  let {partnerId, startDate, endDate, slot, reason, type} = req.body;
   const response = customResponse.makeGenericResponse();
 
   try {
-    if(!partnerId || !startDate || !endDate){
+    if(!partnerId || !startDate || !endDate || !type){
       response.statusCode = 400;
-      response.message = "Please provide all details (partnerId, startDate, endDate, appliedDate)";
+      response.message = "Please provide all details (partnerId, startDate, endDate, type)";
       response.error = "Some details are missing";
       return response;
     }
@@ -210,7 +210,7 @@ API.applyLeave = async (req, res) => {
     }
 
     // For single-day leaves with time slots
-    if (startDate.getDate() === endDate.getDate()) {
+    if (type.toUpperCase() == "SINGLE") {
       if (!slot) {
         response.statusCode = 400;
         response.message = "Please provide a slot for the leave";
@@ -239,7 +239,9 @@ API.applyLeave = async (req, res) => {
       startDate,
       endDate,
       appliedDate: new Date(),
-      slot: slot || null
+      slot: slot || null,
+      reason: reason,
+      type: type
     });
 
     var id = await newLeave.save();
@@ -262,7 +264,7 @@ API.getAllLeaves = async (req, res) => {
   const response = customResponse.makeGenericResponse();
 
   try {
-    let leaves = await Leave.find().sort({ appliedDate: -1 });
+    let leaves = await Leave.find().sort({ appliedDate: -1 }).populate('partnerId');
     for(let leave of leaves){
       if(leave.slot && leave.slot.start && leave.slot.end){
         let startSlot = leave.slot.start.split(":");
@@ -287,7 +289,8 @@ API.getAllLeaves = async (req, res) => {
 
 // Update leave
 API.updateLeave = async (req, res) => {
-  let { leaveId, startDate, endDate, slot, status } = req.body;
+  let { leaveId, startDate, endDate, slot, status, type, reason } = req.body;
+  console.log(req.body);
   const response = customResponse.makeGenericResponse();
 
   try {
@@ -295,7 +298,7 @@ API.updateLeave = async (req, res) => {
       response.statusCode = 400;
       response.message = "Please provide leaveId.";
       response.error = "leaveId missing";
-      return res.json(response);
+      return response;
     }
 
     // Finding the leave record by ID
@@ -304,7 +307,7 @@ API.updateLeave = async (req, res) => {
       response.statusCode = 404;
       response.message = "Leave record not found.";
       response.error = "Not found";
-      return res.json(response);
+      return response;
     }
 
     if (startDate) {
@@ -319,6 +322,12 @@ API.updateLeave = async (req, res) => {
     if(status){
       leave.status = status;
     }
+    if(reason){
+      leave.reason = reason;
+    }
+    if(type){
+      leave.type = type;
+    }
 
     // Checking if updates are possible or not
     let overlappingLeave = await Leave.findOne({
@@ -332,7 +341,7 @@ API.updateLeave = async (req, res) => {
       response.statusCode = 409;
       response.message = "Updated leave overlaps with an existing leave.";
       response.error = "Date range conflict";
-      return res.json(response);
+      return response;
     }
 
     await leave.save();

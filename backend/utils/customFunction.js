@@ -33,13 +33,13 @@ export const generateTimeSlots = (startTime, endTime, interval = 1) => {
 
 export const setDateTonewDate = (unixtime) =>{
     const date = new Date(unixtime * 1000);
-    date.setUTCHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
     return date;
 }
 
 export const setTimeToGivenDate = (isoString, newHour, newMinute) => {
     const date = new Date(isoString);  
-    date.setUTCHours(newHour);
-    date.setUTCMinutes(newMinute); 
+    date.setHours(newHour);
+    date.setMinutes(newMinute); 
     return date.toISOString();
 }
