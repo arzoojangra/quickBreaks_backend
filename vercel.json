@@ -1,5 +1,5 @@
 {
-    "buildCommand": "cd frontend && npm install && npm start",
+    "buildCommand": "cd frontend && npm install && npm start && cd ../backend && npm run dev",
     "outputDirectory": "client/dist",
     "framework": "react",
     "rewrites":[
