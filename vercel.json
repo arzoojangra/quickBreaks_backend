@@ -1,7 +1,7 @@
 {
     "buildCommand": "cd frontend && npm install && npm start && cd ../backend && npm run dev",
     "outputDirectory": "client/dist",
-    "framework": "react",
+    "framework": "create-react-app",
     "rewrites":[
         {
             "source": "/api/(.*)",
