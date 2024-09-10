@@ -39,15 +39,6 @@ const leaveSchema = new mongoose.Schema({
     }
 });
 
-// leaveSchema.pre('validate', function(next) {
-//   if (this.slot){
-//     if (!this.slot.start || !this.slot.end) {
-//       this.invalidate('slot', 'Both start and end times are required if slot is present.');
-//     }
-//   }
-//   next();
-// });
-
 const Leave = mongoose.model('Leave', leaveSchema);
 
 export default Leave;

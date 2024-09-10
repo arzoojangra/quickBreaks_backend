@@ -361,6 +361,4 @@ API.updateLeave = async (req, res) => {
   }
 };
 
-
-
 export default API;

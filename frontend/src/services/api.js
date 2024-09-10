@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// Set the base URL to your backend API
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_BASE_URL
 
 // Fetch all partners
 export const fetchPartners = async () => {
