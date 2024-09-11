@@ -31,7 +31,7 @@ Response.fetchPartners = async function(req, res) {
 // Add schedule
 Response.addSchedule = async function(req, res) {
     try {
-        let data = await API.findSchedule(req, res);
+        let data = await API.addSchedule(req, res);
         customResponse.sendGenericResponse(req, res, data.statusCode, data.result, data.message, data.error);
     } catch (error) {
         customResponse.sendGenericResponse(req, res, 500, null, "", "Something went wrong!");

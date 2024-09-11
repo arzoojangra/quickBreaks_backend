@@ -106,6 +106,11 @@ API.findSchedule = async (req, res) => {
     }
 
     let schedules = await Schedule.findOne({ partnerId });
+    if(!schedules){
+      response.statusCode = 404;
+      response.message = "Partner's schedule not found!";
+      return response;
+    }
     response.result = { data: schedules.week };
     response.statusCode = 201;
     response.message = "Partners fetched successfully!";
@@ -145,6 +150,11 @@ API.findScheduleForDate = async (req, res) =>{
     day = DAYS[day];
 
     let schedules = await Schedule.findOne({partnerId});
+    if(!schedules){
+      response.statusCode = 404;
+      response.message = "Partner's schedule not found! Please choose another date!";
+      return response;
+    }
     schedules = schedules.week[day];
     let slots = generateTimeSlots(schedules[0].start, schedules[0].end);
 
@@ -155,7 +165,7 @@ API.findScheduleForDate = async (req, res) =>{
     return response;
     
   } catch (error) {
-    console.log("Error fetching partner's schedule for given date!");
+    console.log("Error fetching partner's schedule for given date!", error);
     response.statusCode = 500;
     response.message = "Error fetching partner's schedule for given date!";
     response.error = error;
@@ -245,6 +255,11 @@ API.applyLeave = async (req, res) => {
     });
 
     var id = await newLeave.save();
+    if(!id){
+      response.statusCode = 500;
+      response.message = "Leave can't be applied!";
+      return response;
+    }
     response.statusCode = 200;
     response.message = "Leave applied successfully!";
     response.result = { data: id };
@@ -344,7 +359,12 @@ API.updateLeave = async (req, res) => {
       return response;
     }
 
-    await leave.save();
+    let id = await leave.save();
+    if(!id){
+      response.statusCode = 500;
+      response.message = "Leave can't be updated!";
+      return response;
+    }
 
     response.statusCode = 200;
     response.message = "Leave updated successfully!";
